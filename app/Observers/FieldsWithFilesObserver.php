@@ -16,7 +16,7 @@ class FieldsWithFilesObserver
         if (isset($model->fieldsWithFile)) {
             $fileoptions = $model->fieldsWithFile;
             foreach($fileoptions as $fF => $fileopts) {
-                if (property_exists($model, $fF)) {
+                if (isset($model->{$fF})) { // property_exists($model, $fF) not working correctly - false although if actually exists!!!
                     $file = $model->{$fF};
                     if ($file instanceof UploadedFile) {
                         $ext = $file->extension();
@@ -46,21 +46,6 @@ class FieldsWithFilesObserver
                                 }
                                 $url .= $file->storeAs($path, "$name.$ext", $disk); // it could be also with Storage
                             }
-
-                            /* uploaded
-                            if (!is_null($existing)) { // clean an old file
-                                if (isset($disk)) {
-                                    $img = \str_replace(config("filesystems.disks.$disk.url") . '/', '', $existing->{$fF});
-                                    if (Storage::disk($disk)->exists($img)) { // remove the old one
-                                        Storage::disk($disk)->delete($img);
-                                    }
-                                } else {
-                                    $img = $existing->{$fF};
-                                    if (Storage::exists($img)) {
-                                        Storage::delete($img);
-                                    }
-                                }
-                            } */
                             $model->{$fF} =  $url;
                             continue; // skip return false
                         } else {
@@ -70,7 +55,7 @@ class FieldsWithFilesObserver
                         $model->{$fF} = 'Not a file!';
                     }
                 } else {
-                    $model->{$fF} = "No such a property $fF";
+                    $model->{$fF} = "No value for the field $fF";
                 }
                 if ($fileopts['fileRequired'])
                     return false;
@@ -84,8 +69,6 @@ class FieldsWithFilesObserver
     }
 
     public function updating(Model $model) {
-        $this->origValue = $model->getRawOriginal();
-        $this->fileOptions = $model->fieldsWithFile;
         $result = $this->uploadFiles($model);
         return $result;
     }
@@ -93,16 +76,14 @@ class FieldsWithFilesObserver
     public function updated(Model $model) {
         // remove the unused file
         $this->fileOptions = $model->fieldsWithFile;
+        $this->origValue = $model->getOriginal();
         $this->removeFiles();
-    }
-
-    public function deleting(Model $model) {
-        $this->origValue = $model->getRawOriginal();
     }
 
     public function deleted(Model $model) {
         // remove the unused file
         $this->fileOptions = $model->fieldsWithFile;
+        $this->origValue = $model->getOriginal();
         $this->removeFiles();
     }
 
@@ -121,12 +102,12 @@ class FieldsWithFilesObserver
                     $public = (config("filesystems.disks.$disk.visibility") == 'public');
                 }
                 if (isset($disk) && $public) {
-                    $img = \str_replace(config("filesystems.disks.$disk.url") . '/', '', $existing->{$fF});
+                    $img = \str_replace(config("filesystems.disks.$disk.url") . '/', '', $existing[$fF]);
                     if (Storage::disk($disk)->exists($img)) { // remove the old one
                         Storage::disk($disk)->delete($img);
                     }
                 } else {
-                    $img = $existing->{$fF};
+                    $img = $existing[$fF];
                     if (Storage::exists($img)) {
                         Storage::delete($img);
                     }
