@@ -10,7 +10,12 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, FieldsWithFilesObservable;
+
+    // BM> files for the fields to be in synch
+    public $fieldsWithFile = [
+        'user_img' => ['filePath' => 'public/users', 'fileDriver' => 'public', 'fileRequired' => false]
+    ];
 
     /**
      * The attributes that are mass assignable.

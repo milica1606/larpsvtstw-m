@@ -16,11 +16,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    use ModelWithFiles;
+    // use ModelWithFiles;
 
-    public $fileFields = [
+    /* public $fileFields = [
         'user_img' => ['filePath' => 'public/users', 'fileDriver' => 'public']
-    ];
+    ]; */
 
     public function login(Request $request) {
         if (Auth::attempt($request->only('email','password')))
@@ -53,11 +53,11 @@ class AuthController extends Controller
     }
 
     public function register(RegisterRequest $request) {
-        $imgurl = $this->uploadFiles($request);
-        $user = User::create($request->only('first_name', 'last_name', 'email') + [
+        // $imgurl = $this->uploadFiles($request);
+        $user = User::create($request->only('first_name', 'last_name', 'email', 'user_img') + [
             'role_id' => 4, /* always register a new user as author */
             'password' => Hash::make($request->input('password') /* 1234 */),
-        ] + $imgurl);
+        ] /* + $imgurl */);
         /* NE TREBA KADA JE U MODELU User implements MustVerifyEmail
         if ($user) {*/
             event(new Registered($user));
@@ -77,11 +77,15 @@ class AuthController extends Controller
 
     public function updateInfo(UpdateInfoRequest $request) {
         $user = Auth::user();
-        $imgurl = $this->uploadFiles($request, $this->fileFields, $user);
+        // $imgurl = $this->uploadFiles($request, $this->fileFields, $user);
         /** @var \App\Models\User|null $user */
-        $user->update($request->only('first_name','last_name','email','role_id') + $imgurl);
+        if ($user->update($request->only('first_name','last_name','email','role_id', 'user_img') /* + $imgurl */)) {
+            return response(new UserResource($user), Response::HTTP_ACCEPTED);
+        } else {
+            return response(__('Error in update'), Response::HTTP_NOT_ACCEPTABLE);
+        }
 
-        return response(new UserResource($user), Response::HTTP_ACCEPTED);
+
     }
 
     public function updatePassword(UpdatePasswordRequest $request) {

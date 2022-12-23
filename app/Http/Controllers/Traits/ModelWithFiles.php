@@ -44,7 +44,7 @@ trait ModelWithFiles {
                         $url .= $file->storeAs($path, "$name.$ext", $disk); // it could be also with Storage
                     }
                     if (!is_null($existing)) { // clean an old file
-                        if (isset($disk)) {
+                        if (isset($disk) && $public) {
                             $img = \str_replace(config("filesystems.disks.$disk.url") . '/', '', $existing->{$fF});
                             if (Storage::disk($disk)->exists($img)) { // remove the old one
                                 Storage::disk($disk)->delete($img);
