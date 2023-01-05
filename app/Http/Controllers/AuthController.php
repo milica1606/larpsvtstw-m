@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Cookie;
-use App\Http\Controllers\Traits\ModelWithFiles;
 use App\Http\Requests\UpdateInfoRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,9 +47,9 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request) {
         $user = User::create($request->only('first_name', 'last_name', 'email', 'user_img') + [
-            'role_id' => 4, /* always register a new user as author */
             'password' => Hash::make($request->input('password') /* 1234 */),
         ]);
+        $user->roles()->attach(4); // starts as an Author
         event(new Registered($user));
         return response($user, Response::HTTP_CREATED);
     }
@@ -60,7 +59,7 @@ class AuthController extends Controller
         /** @var \App\User|null $user */ /* DA BI Intelephense PREPOZNAO IZ PHP Authenticatable INTERFEJSA */
         return (new UserResource($user))->additional([
             "data" => [
-                "permissions" => $user->permissions(),
+                "permissions" => $user->capabilities(),
             ],
         ]);
     }

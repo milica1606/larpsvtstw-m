@@ -8,18 +8,12 @@ use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\Traits\ModelWithFiles;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    use ModelWithFiles;
-
-    public $fileFields = [
-        'user_img' => ['filePath' => 'public/users', 'fileDriver' => 'public']
-    ];
     /**
      * Display a listing of the resource.
      *
@@ -79,14 +73,17 @@ class UserController extends Controller
         return response(new UserResource($user), Response::HTTP_ACCEPTED);
     }
 
-    public function updateRole(Request $request, $id) {
+    public function updateRoles(Request $request, $id) {
         Gate::authorize('edit', 'users'); //roles?
         Gate::authorize('edit', 'roles');
+
         $user = User::find($id);
-        $roleid = $request->input('role_id');
-        $role = Role::find($roleid);
+        $roles= $request->input('role_id'); //array!
+        $user->roles()->sync($roles);
+        /*$role = Role::find($roleid);
         $user->role()->associate($role);
-        $user->save();
+
+        $user->save(); */
 
         return response(new UserResource($user), Response::HTTP_ACCEPTED);
     }
@@ -100,7 +97,13 @@ class UserController extends Controller
     public function destroy($id)
     {
         Gate::authorize('edit', 'users');
-        User::destroy($id);
+        // delete all roles
+        $user = User::find($id);
+        if ($user) {
+            $user->roles()->detach();
+            // ... and then the user can be deleted
+            User::destroy($id);
+        }
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }

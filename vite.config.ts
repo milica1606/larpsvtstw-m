@@ -13,4 +13,7 @@ export default defineConfig({
         }),
         svelte()
     ],
+    optimizeDeps: {
+        exclude: ['tinro']
+    },
 });

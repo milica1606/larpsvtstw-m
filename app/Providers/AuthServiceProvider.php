@@ -25,13 +25,13 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-	$this->registerPolicies();
+        $this->registerPolicies();
+        /** @var CachesRoutes $app */
+        // if (! $this->app->routesAreCached()) {
+                Passport::Routes();
+        // }
 
-	if (! $this->app->routesAreCached()) {
-            Passport::Routes();
-	}
-
-	Gate::define('view', function(User $user, $model) {
+        Gate::define('view', function(User $user, $model) {
             //return false; za sada
             return $user->hasAccess("view_$model") || $user->hasAccess("edit_$model");
         });
@@ -39,6 +39,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('edit', function(User $user, $model) {
             //return false; za sada
             return $user->hasAccess("edit_$model");
+        });
+
+        Gate::define('permitted', function(User $user, $perm) {
+            return $user->hasAccess($perm);
         });
     }
 }

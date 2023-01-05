@@ -8,7 +8,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
-class RolePermissionSeeder extends Seeder
+class PermissionRoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -20,7 +20,7 @@ class RolePermissionSeeder extends Seeder
         $permissions = Permission::all();
         $admin = Role::whereName('Admin')->first();
         foreach($permissions as $permission) {
-            DB::table('role_permission')->insert([
+            DB::table('permission_role')->insert([
                 'role_id' => $admin->id,
                 'permission_id' => $permission->id,
             ]);
@@ -28,7 +28,7 @@ class RolePermissionSeeder extends Seeder
         $editor = Role::whereName('Editor')->first();
         foreach($permissions as $permission) {
             if(!in_array($permission->name,['edit_roles'])) {
-                DB::table('role_permission')->insert([
+                DB::table('permission_role')->insert([
                     'role_id' => $editor->id,
                     'permission_id' => $permission->id,
                 ]);

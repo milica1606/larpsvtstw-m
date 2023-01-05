@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -27,7 +28,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_name',
         'email',
 	    'password',
-	    'role_id',
         'user_img'
     ];
 
@@ -52,17 +52,23 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $guarded = ['id'];
 
-    public function role()
+    public function roles()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 
-    public function permissions()
+    public function capabilities()
     {
-        return $this->role->permissions->pluck('name');
+        $roles = $this->roles;
+        $perms = new Collection();
+        foreach($roles as $role) {
+            $perms = $perms->merge($role->permissions->pluck('name')); //merge collections of permissions for each role
+        }
+        return $perms;
     }
 
-    public function hasAccess($permission) {
-        return $this->permissions()->contains($permission);
+    public function hasAccess($permission)
+    {
+        return $this->capabilities()->contains($permission);
     }
 }

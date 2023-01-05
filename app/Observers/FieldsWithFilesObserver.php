@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Storage;
 class FieldsWithFilesObserver
 {
     protected $origValue;
+    protected $curValue;
     protected $fileOptions;
+    protected $fromDelete;
 
     protected function uploadFiles(Model &$model) {
         if (isset($model->fieldsWithFile)) {
@@ -52,7 +54,7 @@ class FieldsWithFilesObserver
                             $model->{$fF} = 'File is not valid!';
                         }
                     } else {
-                        $model->{$fF} = 'Not a file!';
+                        //NOTHING! $model->{$fF} = 'Not a file!';
                     }
                 } else {
                     $model->{$fF} = "No value for the field $fF";
@@ -77,6 +79,8 @@ class FieldsWithFilesObserver
         // remove the unused file
         $this->fileOptions = $model->fieldsWithFile;
         $this->origValue = $model->getOriginal();
+        $this->curValue = $model->getAttributes();
+        $this->fromDelete = false;
         $this->removeFiles();
     }
 
@@ -84,6 +88,8 @@ class FieldsWithFilesObserver
         // remove the unused file
         $this->fileOptions = $model->fieldsWithFile;
         $this->origValue = $model->getOriginal();
+        $this->curValue = $model->getAttributes();
+        $this->fromDelete = true;
         $this->removeFiles();
     }
 
@@ -91,25 +97,28 @@ class FieldsWithFilesObserver
         if (isset($this->fileOptions)) {
             $fileoptions = $this->fileOptions;
             $existing = $this->origValue;
+            $cur = $this->curValue;
             foreach($fileoptions as $fF => $fileopts) {
-                if (isset($fileopts['fileDriver'])) {
-                    $disk = $fileopts['fileDriver'];
-                }
-                $public = false;
-                if (isset($fileopts['public'])) {
-                    $public = $fileopts['public'];
-                } else if (isset($disk)) {
-                    $public = (config("filesystems.disks.$disk.visibility") == 'public');
-                }
-                if (isset($disk) && $public) {
-                    $img = \str_replace(config("filesystems.disks.$disk.url") . '/', '', $existing[$fF]);
-                    if (Storage::disk($disk)->exists($img)) { // remove the old one
-                        Storage::disk($disk)->delete($img);
+                if (($existing[$fF] != $cur[$fF]) || ($this->fromDelete)) {
+                    if (isset($fileopts['fileDriver'])) {
+                        $disk = $fileopts['fileDriver'];
                     }
-                } else {
-                    $img = $existing[$fF];
-                    if (Storage::exists($img)) {
-                        Storage::delete($img);
+                    $public = false;
+                    if (isset($fileopts['public'])) {
+                        $public = $fileopts['public'];
+                    } else if (isset($disk)) {
+                        $public = (config("filesystems.disks.$disk.visibility") == 'public');
+                    }
+                    if (isset($disk) && $public) {
+                        $img = \str_replace(config("filesystems.disks.$disk.url") . '/', '', $existing[$fF]);
+                        if (Storage::disk($disk)->exists($img)) { // remove the old one
+                            Storage::disk($disk)->delete($img);
+                        }
+                    } else {
+                        $img = $existing[$fF];
+                        if (Storage::exists($img)) {
+                            Storage::delete($img);
+                        }
                     }
                 }
             }

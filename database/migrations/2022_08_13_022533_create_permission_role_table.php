@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->bigInteger('role_id')->unsigned()/*->nullable()->index()*/;
+        Schema::create('permission_role', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('permission_id');
+            $table->unsignedBigInteger('role_id');
+            $table->foreign('permission_id')->references('id')->on('permissions');
             $table->foreign('role_id')->references('id')->on('roles');
         });
-
-
     }
 
     /**
@@ -28,9 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
-        });
+        Schema::dropIfExists('permission_role');
     }
 };

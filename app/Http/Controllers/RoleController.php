@@ -24,7 +24,7 @@ class RoleController extends Controller
         //dodavanje i ovlascenja ukoliko ih ima u zahtevu
         if($permissions = $request->input('permissions')) {
             foreach($permissions as $permission_id) {
-                DB::table('role_permission')->insert([
+                DB::table('permission_role')->insert([
                     'role_id' => $role->id,
                     'permission_id' => $permission_id,
                 ]);
@@ -62,7 +62,7 @@ class RoleController extends Controller
     {
         Gate::authorize('edit', 'roles');
         // odrzavanje referencijalnog integriteta - podrazumeva se restrict: prvo obrisati zavisne podatke
-        DB::table('role_permission')->where('role_id', $id)->delete();
+        DB::table('permission_role')->where('role_id', $id)->delete();
         // ... a tek onda nezavisne
         Role::destroy($id);
         return response(null, Response::HTTP_NO_CONTENT);
