@@ -46,15 +46,15 @@ class RoleController extends Controller
         $role->update($request->only('name'));
         //dodavanje i ovlascenja ukoliko ih ima u zahtevu, obrisu se postojeci i doda nova verzija
         if($permissions = $request->input('permissions')) {
-            DB::table('role_permission')->where('role_id', $role->id)->delete();
+            DB::table('permission_role')->where('role_id', $role->id)->delete();
             foreach($permissions as $permission_id) {
-                DB::table('role_permission')->insert([
+                DB::table('permission_role')->insert([
                     'role_id' => $role->id,
                     'permission_id' => $permission_id,
                 ]);
             }
         }
-
+        //dodavanje korisnika?
         return response(new RoleResource($role), Response::HTTP_ACCEPTED);
     }
 

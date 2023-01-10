@@ -37,7 +37,7 @@ class UserController extends Controller
     {
         Gate::authorize('edit', 'users');
         $imgurl = $this->uploadFiles($request);
-        $user = User::create($request->only('first_name', 'last_name', 'email', 'role_id') + [
+        $user = User::create($request->only('first_name', 'last_name', 'email') + [
             'password' => Hash::make(1234),
         ] + $imgurl);
 
@@ -68,8 +68,7 @@ class UserController extends Controller
     {
         Gate::authorize('edit', 'users');
         $user = User::find($id);
-        $imgurl = $this->uploadFiles($request, [], $user);
-        $user->update($request->only('first_name','last_name','email') + $imgurl);
+        $user->update($request->only('first_name','last_name','email','user_img'));
         return response(new UserResource($user), Response::HTTP_ACCEPTED);
     }
 
@@ -79,7 +78,7 @@ class UserController extends Controller
 
         $user = User::find($id);
         $roles= $request->input('role_id'); //array!
-        $user->roles()->sync($roles);
+        $user->roles()->attach($roles);
         /*$role = Role::find($roleid);
         $user->role()->associate($role);
 

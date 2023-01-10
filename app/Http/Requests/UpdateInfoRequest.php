@@ -25,7 +25,6 @@ class UpdateInfoRequest extends FormRequest
     {
         return [
             "email" => "email:filter",
-            "role_id" => "exists:roles",
             "img_url" => "mimes:png,jpg,jpeg",
         ];
     }

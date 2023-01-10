@@ -67,7 +67,7 @@ class AuthController extends Controller
     public function updateInfo(UpdateInfoRequest $request) {
         $user = Auth::user();
         /** @var \App\Models\User|null $user */
-        if ($user->update($request->only('first_name','last_name','email','role_id', 'user_img'))) {
+        if ($user->update($request->only('first_name','last_name','email', 'user_img'))) {
             return response(new UserResource($user), Response::HTTP_ACCEPTED);
         } else {
             return response(__('Error in update'), Response::HTTP_NOT_ACCEPTABLE);
