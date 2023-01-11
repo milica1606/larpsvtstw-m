@@ -18,7 +18,7 @@ class AuthController extends Controller
     public function login(Request $request) {
         if (Auth::attempt($request->only('email','password')))
         {
-        /** @var \App\Models\User|null $user */ /* DA BI Intelephense PREPOZNAO IZ PHP Authenticatable INTERFEJSA */
+        /** @var \App\Models\User|null $user */ /* SO Intelephense COULD PARSE PHP Authenticatable INTERFACE */
             $user = Auth::user();
             $token = $user->createToken('admin')->accessToken;
             /* return [
@@ -39,7 +39,7 @@ class AuthController extends Controller
     public function logout(Request $request) {
         $cookie = Cookie::forget('jwt');
         return \response(["message" => __('auth.logout_success')])->withCookie($cookie);
-        /* MOZE I OBICNI PHP if (isset($_COOKIE['jwt'])) {
+        /* OR VANILLA PHP if (isset($_COOKIE['jwt'])) {
             unset($_COOKIE['jwt']);
             setcookie('jwt', '', time() - 3600, '/'); // empty value and old timestamp
         } */
@@ -56,12 +56,12 @@ class AuthController extends Controller
 
     public function user() {
         $user = Auth::user();
-        /** @var \App\User|null $user */ /* DA BI Intelephense PREPOZNAO IZ PHP Authenticatable INTERFEJSA */
-        return (new UserResource($user))->additional([
+        /** @var \App\User|null $user */ /* SO Intelephense COULD PARSE PHP Authenticatable INTERFACE  */
+        return (new UserResource($user))/*->additional([
             "data" => [
                 "permissions" => $user->capabilities(),
             ],
-        ]);
+        ])*/;
     }
 
     public function updateInfo(UpdateInfoRequest $request) {
@@ -78,7 +78,7 @@ class AuthController extends Controller
 
     public function updatePassword(UpdatePasswordRequest $request) {
         $user = Auth::user();
-        // DA LI UZ PROVERU e-POSTE?
+        // WITH E-MAIL VERIFICATION?
 
         /** @var \App\Models\User|null $user */
         $user->update([

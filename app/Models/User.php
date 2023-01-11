@@ -57,6 +57,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Role::class);
     }
 
+    public function getCapabilitiesAttribute()
+    { // so capabilities could be called as dynamic property, even within (json) resources
+        return $this->capabilities();
+    }
+
     public function capabilities()
     {
         $roles = $this->roles;
@@ -64,7 +69,7 @@ class User extends Authenticatable implements MustVerifyEmail
         foreach($roles as $role) {
             $perms = $perms->merge($role->permissions->pluck('name')); //merge collections of permissions for each role
         }
-        return $perms;
+        return $perms->unique();
     }
 
     public function hasAccess($permission)
