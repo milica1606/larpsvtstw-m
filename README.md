@@ -10,7 +10,7 @@ This starter template includes:
 -   Vite
 -   Svelte (with tinro Svelte client router)
 -   Tailwind CSS (with `@tailwindcss/forms` and `@tailwindcss/aspect-ratio` plugins)
--   Axios (is optional, built-in fetch() is already OK to send API calls from client side)
+-   Axios (is optional, built-in `fetch()` is already OK to send API calls from client side)
 -   TypeScript
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
@@ -26,9 +26,9 @@ This starter template includes:
 
 ## Information
 
--   The app is located in [`resources/js/`](/resources/js/).
+-   The client Svelte app is located in [`resources/js/`](/resources/js/).
 -   You can use [`resources/css/`](/resources/css/) for styling.
--   Tailwind CSS styles should be applied via @apply in Svelte component's styles within &lt;style&gt; (like recommended <a href="https://kaan.fyi/feed/making-sense-of-tailwind-in-svelte/">here</a>)...
+-   Tailwind CSS styles should be applied via `@apply` in Svelte component's styles within &lt;style&gt; (like recommended <a href="https://kaan.fyi/feed/making-sense-of-tailwind-in-svelte/">here</a>)...
 -   ... or remove Tailwind CSS styles (classes) if you don't want to use them by commenting lines in [`resources/css/app.css`](/resources/css/app.css) file
 
 ## Installation
@@ -44,7 +44,7 @@ Make a copy of the `.env.example` file named `.env` - as following in Linux:
 ```bash
 cp .env.example .env
 ```
-(xcopy instead of cp in Windows command prompt)
+(`xcopy` instead of `cp` in Windows command prompt)
 
 Generate an app key:
 
@@ -52,12 +52,12 @@ Generate an app key:
 php artisan key:generate
 ```
 
-Fill the .env file with database information and run migrations (create database tables and their columns, indices etc.):
+Fill the `.env` file with database information and run migrations (create database tables and their columns, indices etc.):
 
 ```bash
 php artisan migrate:fresh
 ```
-(could be without :fresh if database has not already been used)
+(could be without `:fresh` if database has not already been used)
 
 Fill database tables with test (fake) data by running db seeders:
 
@@ -79,7 +79,7 @@ php artisan storage:link
 
 Server part is good to go now!
 
-Install client (Svelte) part with all `package.json` dependencies (maybe better with package-lock.json file removed):
+Install client (Svelte) part with all `package.json` dependencies (maybe better with `package-lock.json` file removed):
 
 ```bash
 npm install
