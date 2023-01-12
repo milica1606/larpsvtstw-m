@@ -4,10 +4,13 @@
 This starter template includes:
 
 -   Laravel 9
+    -   with Passport package - so recommended OAuth 2.0 with PKCE could also be implemented if needed; Passport version is such that Passport::Routes() command is still needed)
+    -   jwt token for authenticated users transfered via cookie
+    -   a model property (and its corresponding database table field) containing a file path / address can be automatically synchronized with a file it refers to (a new file is created on executing a regular model's create() command; an old file is deleted on a successful update or deletion of a record via model methods)
 -   Vite
--   Svelte
--   Tailwind CSS (w/ `@tailwindcss/forms` and `@tailwindcss/aspect-ratio`)
--   Axios
+-   Svelte (with tinro Svelte client router)
+-   Tailwind CSS (with `@tailwindcss/forms` and `@tailwindcss/aspect-ratio` plugins)
+-   Axios (is optional, built-in fetch() is already OK to send API calls from client side)
 -   TypeScript
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
@@ -25,20 +28,23 @@ This starter template includes:
 
 -   The app is located in [`resources/js/`](/resources/js/).
 -   You can use [`resources/css/`](/resources/css/) for styling.
+-   Tailwind CSS styles should be applied via @apply in Svelte component's styles within &lt;style&gt; (like recommended <a href="https://kaan.fyi/feed/making-sense-of-tailwind-in-svelte/">here</a>)...
+-   ... or remove Tailwind CSS styles (classes) if you don't want to use them by commenting lines in [`resources/css/app.css`](/resources/css/app.css) file
 
 ## Installation
 
-Install the composer dependencies:
+Install the composer dependencies (often is better to remove the composer.lock file first):
 
 ```bash
 composer install
 ```
 
-Make a copy of the `.env.example` file named `.env`:
+Make a copy of the `.env.example` file named `.env` - as following in Linux:
 
 ```bash
 cp .env.example .env
 ```
+(xcopy instead of cp in Windows command prompt)
 
 Generate an app key:
 
@@ -46,7 +52,34 @@ Generate an app key:
 php artisan key:generate
 ```
 
-Install all `package.json` dependencies:
+Fill the .env file with database information and run migrations (create database tables and their columns, indices etc.):
+
+```bash
+php artisan migrate:fresh
+```
+(could be without :fresh if database has not already been used)
+
+Fill database tables with test (fake) data by running db seeders:
+
+```bash
+php artisan db:seed
+```
+
+Create Passport clients to enable user authentication:
+
+```bash
+php artisan passport:install
+```
+
+Create a symlink to provide public access to files:
+
+```bash
+php artisan storage:link
+```
+
+Server part is good to go now!
+
+Install client (Svelte) part with all `package.json` dependencies (maybe better with package-lock.json file removed):
 
 ```bash
 npm install
