@@ -4,10 +4,13 @@
     export const scrollPanels = true;
     export const navWidth = '8rem';
     import { setWidth } from "../actions/setWidth";
-    let scrollLayout;
-    $: scrollLayout = !scrollPanels;
+    let scrollLayout, wholeScreenScroll;
+    $: {
+        scrollLayout = scrollPanels;
+        wholeScreenScroll = scrollPanels;
+    }
 </script>
-<div class="layout" class:wholeScreen>
+<div class="layout" class:wholeScreen class:wholeScreenScroll>
     <slot>
         {#if $$slots.header}
             <header>
@@ -42,6 +45,9 @@
     }
     .wholeScreen {
         @apply min-h-screen;
+    }
+    .wholeScreenScroll {
+        @apply h-screen;
     }
     .main {
         @apply flex-1;
