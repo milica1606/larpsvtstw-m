@@ -21,6 +21,8 @@
         .then((response) => {
             if (response.status === 200) {
                 return response.json();
+            } else if(response.status === 400) {
+                throw new Error('Not authenticated!');
             } else {
                 throw new Error('Something went wrong on API server!');
             }
@@ -37,9 +39,11 @@
 
     }
 </script>
-<h1>Please sign in</h1>
-<form>
-    <label for="email">E-mail:</label><input id="email" type="text" placeholder="Enter a valid e-mail address" bind:value={email}/>
-    <label for="password">Password:</label><input id="password" type="password" bind:value={password}/>
-    <button on:click|preventDefault={log}>Sign In</button>
-</form>
+<main>
+    <h1>Please sign in</h1>
+    <form>
+        <label for="email">E-mail:</label><input id="email" type="text" placeholder="Enter a valid e-mail address" bind:value={email}/>
+        <label for="password">Password:</label><input id="password" type="password" bind:value={password}/>
+        <button on:click|preventDefault={log}>Sign In</button>
+    </form>
+</main>
