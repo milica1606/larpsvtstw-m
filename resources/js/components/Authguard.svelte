@@ -1,5 +1,5 @@
 <script>
-	import {user} from '../auth.js';
+	import {user} from '../auth';
 </script>
 
 {#if $user.id}

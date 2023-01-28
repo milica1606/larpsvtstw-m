@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div id="app"></div>
+    <div style="display: contents" class="h-screen overflow-hidden" id="app"><input id="url" type="hidden" value="{{ $url }}"/></div>
     @vite(['resources/js/app.ts'])
 </body>
 

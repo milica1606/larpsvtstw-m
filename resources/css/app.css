@@ -2,3 +2,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* COMMON = GLOBAL STYLES FOR SKELETON UI */
+html, body { @apply h-full overflow-hidden; }
+h1, h2, h3, h4, h5, h6, button, a {  @apply font-bold; }
+li:has(.active) { @apply bg-primary-active-token; }
