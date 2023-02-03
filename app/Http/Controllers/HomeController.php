@@ -31,4 +31,12 @@ class HomeController extends Controller
 
       return response(['message' => 'OK'], 200);
     }
+
+    public function setLocale(Request $request)
+    {
+      $this->setEnvironmentValue('APP_LOCALE', $request->locale);
+      // AND SERVER IS RESTARTED AFTER THAT - THERE SHOULD BE A BETTER SOLUTION!!
+
+      return response(['message' => 'OK'], 200);
+    }
 }

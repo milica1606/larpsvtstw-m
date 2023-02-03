@@ -28,7 +28,7 @@ Route::get('test', function (Request $request) {
 Route::post('login',[AuthController::class,'login']);
 Route::post('register',[AuthController::class,'register']);
 
-Route::put('lang',[HomeController::class,'setEnv']); // not safe!
+Route::put('lang',[HomeController::class,'setLocale']);
 
 //email verification API routes
 Route::get("email/resend", [AuthEmailVerificationController::class, 'resend'])

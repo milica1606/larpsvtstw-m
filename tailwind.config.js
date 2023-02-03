@@ -10,9 +10,12 @@ module.exports = {
     theme: {
         extend: {},
     },
+    /* corePlugins: {
+        aspectRatio: false,
+    }, */
     plugins: [
         require("@tailwindcss/forms"),
-        require("@tailwindcss/aspect-ratio"),
-        require('@skeletonlabs/skeleton/tailwind/skeleton.cjs'), /* Skeleton UI plugin to include files for color and design token classes */
+        /* require("@tailwindcss/aspect-ratio") not needed for Tailwind version 3+, */
+        ...require('@skeletonlabs/skeleton/tailwind/skeleton.cjs')(), /* Skeleton UI plugin to include files for color and design token classes */
     ],
 }

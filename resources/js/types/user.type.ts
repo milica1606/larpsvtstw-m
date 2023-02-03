@@ -4,6 +4,6 @@ export interface User {
     first_name?: string,
     last_name?: string,
     email?: string,
-    user_img: string,
+    user_img?: string,
     roles?: Role[],
 };

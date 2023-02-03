@@ -3,6 +3,8 @@
     import { toastStore } from '@skeletonlabs/skeleton';
     import type { ToastSettings } from '@skeletonlabs/skeleton';
 
+    import { t } from '../i18n/index';
+
     let email: string;
     let password: string;
     let formdata: {
@@ -32,8 +34,8 @@
         .then((data) => {
             console.log(data);
             $user = data.user;
-            const t: ToastSettings = {
-                message: 'Logged in successfully',
+            const ts: ToastSettings = {
+                message: $t('Logged in successfully'),
                 // Optional: Presets for primary | secondary | tertiary | warning
                 preset: 'success',
                 // Optional: The auto-hide settings
@@ -45,11 +47,11 @@
                     response: () => alert('Logged in successfully')
                 } */
             };
-            toastStore.trigger(t);
+            toastStore.trigger(ts);
         })
         .catch((error) => {
             console.error(error);
-            const t: ToastSettings = {
+            const ts: ToastSettings = {
                 message: error,
                 // Optional: Presets for primary | secondary | tertiary | warning
                 preset: 'error',
@@ -62,22 +64,16 @@
                     response: () => alert(error)
                 } */
 	        };
-            toastStore.trigger(t);
+            toastStore.trigger(ts);
         });
-
-
     }
 </script>
 <main>
-    <h1>Please sign in</h1>
+    <h1>{ $t('Please sign in') }</h1>
     <form>
-        <label for="email">E-mail:</label><input class="field" id="email" type="text" placeholder="Enter a valid e-mail address" bind:value={email}/>
-        <label for="password">Password:</label><input class="field" id="password" type="password" bind:value={password}/>
-        <button class="field p-2 my-5" on:click|preventDefault={log}>Sign In</button>
+        <label for="email">E-mail:</label><input class="field" id="email" type="text" placeholder={$t('Enter a valid e-mail address')} bind:value={email}/>
+        <label for="password">{$t('Password')}:</label><input class="field" id="password" type="password" bind:value={password}/>
+        <button class="btn variant-filled-primary btn-base" on:click|preventDefault={log}>{$t('Sign In')}</button>
     </form>
 </main>
-<style>
-    .field {
-        @apply border rounded-2xl;
-    }
-</style>
+

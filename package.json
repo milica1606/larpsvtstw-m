@@ -7,7 +7,7 @@
     },
     "devDependencies": {
         "@inlang/core": "^0.3.1",
-        "@skeletonlabs/skeleton": "^0.92.2",
+        "@skeletonlabs/skeleton": "^0.99.5",
         "@sveltejs/vite-plugin-svelte": "^1.0.2",
         "@tsconfig/svelte": "^3.0.0",
         "autoprefixer": "^10.4.12",
@@ -25,7 +25,9 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
-        "@tailwindcss/aspect-ratio": "^0.4.2",
-        "@tailwindcss/forms": "^0.5.3"
+        "@fortawesome/free-brands-svg-icons": "^6.2.1",
+        "@fortawesome/free-solid-svg-icons": "^6.2.1",
+        "@tailwindcss/forms": "^0.5.3",
+        "svelte-fa": "^3.0.3"
     }
 }

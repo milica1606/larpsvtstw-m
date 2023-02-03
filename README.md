@@ -8,8 +8,13 @@ This starter template includes:
     -   jwt token for authenticated users transfered via cookie
     -   a model property (and its corresponding database table field) containing a file path / address can be automatically synchronized with a file it refers to (a new file is created on executing a regular model's create() command; an old file is deleted on a successful update or deletion of a record via model methods)
 -   Vite
--   Svelte (with tinro Svelte client router)
--   Tailwind CSS (with `@tailwindcss/forms` and `@tailwindcss/aspect-ratio` plugins)
+-   Svelte
+    -   with tinro Svelte client router
+    -   browser can be refreshed on client routes and appropriate route will be displayed (although client user session is destroyed and a user should login again)
+    -   svelte-fa Svelte Font Awesome component
+    -   i18n support - in the same .json files with server-side translation strings; it could be synched with server-side locale
+    -   Skeleton UI library - based on Tailwind and Svelte
+-   Tailwind CSS (with `@tailwindcss/forms` plugin)
 -   Axios (is optional, built-in `fetch()` is already OK to send API calls from client side)
 -   TypeScript
 
@@ -30,6 +35,8 @@ This starter template includes:
 -   You can use [`resources/css/`](/resources/css/) for styling.
 -   Tailwind CSS styles should be applied via `@apply` in Svelte component's styles within &lt;style&gt; (like recommended <a href="https://kaan.fyi/feed/making-sense-of-tailwind-in-svelte/">here</a>)...
 -   ... or remove Tailwind CSS styles (classes) if you don't want to use them by commenting lines in [`resources/css/app.css`](/resources/css/app.css) file
+-   ... Comment those lines too when Skeleton UI is installed, for it takes care about those Tailwind styles as well when its all.css styles are imported like in [`resources/js/App.svelte`](/resources/js/App.svelte)
+-   Responsive design is performed by means of Tailwind classes and by using a [`resources/js/components/SideMenus.svelte`](/resources/js/components/SideMenus.svelte) Svelte component as the same content for the Drawer Skeleton UI Svelte component on small screens as well as for the Left Sidebar menu on wider screens.
 
 ## Installation
 
