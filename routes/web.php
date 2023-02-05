@@ -14,8 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    $address = null;
+    if (isset($_GET['cl'])) {
+        $address = $_GET['cl'];
+    }
+    return view('home', ['url' => $address]);
 });
 
 Route::get('email/verify/{id}/{hash}', [App\Http\Controllers\AuthEmailVerificationController::class, 'verify'])
     ->middleware([/*'auth',*/ 'signed'])->name('verification.verify');
+
+//redirect to home page on client routes directly from browser
+Route::get('/role/{role?}', function ($role) {
+    return redirect("/?cl=role%2F$role");
+});
+
+Route::get('/{other?}', function ($other) {
+    return redirect("/?cl=$other");
+});

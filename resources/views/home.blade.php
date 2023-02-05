@@ -5,12 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel</title>
-
     @vite(['resources/css/app.css'])
 </head>
 
-<body>
-    <div id="app"></div>
+<body data-theme="modern">
+    <div style="display: contents" class="h-screen overflow-hidden" id="app"><input id="url" type="hidden" value="{{ $url }}"/></div>
     @vite(['resources/js/app.ts'])
 </body>
 

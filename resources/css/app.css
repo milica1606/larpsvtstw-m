@@ -1,4 +1,16 @@
-/* TURN OFF TAILWIND STYLES BY COMMENTING THE FOLLOWING LINES */
-@tailwind base;
+/* BY COMMENTING THE FOLLOWING LINES, TURN OFF TAILWIND STYLES OR WITH SKELETON UI TURN THEM ON FROM SKELETON STYLES all.css */
+/*@tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities;*/
+
+/* COMMON = GLOBAL STYLES FOR SKELETON UI */
+html, body { @apply h-full overflow-hidden; }
+h1, h2, h3, h4, h5, h6, button, a {  @apply font-bold; }
+a.active {
+    /* @apply block bg-red-500 text-white hover:bg-red-500 hover:text-white; */
+    color: white;
+    background-color: rgba(236,72,153,1) !important;
+}
+/* body {
+    background-image: radial-gradient(at 76% 0%, hsla(189,100%,56%,0.36) 0px, transparent 50%), radial-gradient(at 1% 0%, hsla(340,100%,76%,0.26) 0px, transparent 50%), radial-gradient(at 20% 100%, hsla(241,100%,70%,0.47) 0px, transparent 50%);
+} */

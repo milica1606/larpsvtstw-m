@@ -1,7 +1,8 @@
 <script>
-    import {user} from '../auth.js';
+    import {user} from '../auth';
+    import { Avatar } from '@skeletonlabs/skeleton';
     let profile;
     $: profile = $user;
 </script>
-<h1>It is User's profile page</h1>
-<span>{profile.last_name} {profile.first_name}</span> <img alt="user" src={profile.user_img} />
+<p>It is User's profile page</p>
+<p class="font-bold">{profile.last_name} {profile.first_name}</p> <Avatar width={'w-48'} src={profile.user_img} />
