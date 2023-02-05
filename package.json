@@ -25,15 +25,10 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
-<<<<<<< HEAD
-        "@tailwindcss/aspect-ratio": "^0.4.2",
-        "@tailwindcss/forms": "^0.5.3",
-        "sourcemap-codec": "^1.4.8"
-=======
+        "sourcemap-codec": "^1.4.8",
         "@fortawesome/free-brands-svg-icons": "^6.2.1",
         "@fortawesome/free-solid-svg-icons": "^6.2.1",
         "@tailwindcss/forms": "^0.5.3",
         "svelte-fa": "^3.0.3"
->>>>>>> ca18375c1f97117f0cd91e62a68886a312f3bde4
     }
 }
